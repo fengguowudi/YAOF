@@ -41,10 +41,10 @@ cp -rf ../PATCH/LRNG/* ./target/linux/generic/hack-5.15/
 echo '
 # CONFIG_RANDOM_DEFAULT_IMPL is not set
 CONFIG_LRNG=y
-CONFIG_LRNG_IRQ=y
+# CONFIG_LRNG_IRQ is not set
 CONFIG_LRNG_JENT=y
 CONFIG_LRNG_CPU=y
-CONFIG_LRNG_SCHED=y
+# CONFIG_LRNG_SCHED is not set
 ' >>./target/linux/generic/config-5.15
 # SSL
 rm -rf ./package/libs/mbedtls
@@ -292,7 +292,7 @@ git clone -b master --depth 1 https://github.com/NateLol/luci-app-oled.git packa
 # homeproxy
 git clone --single-branch --depth 1 -b dev https://github.com/immortalwrt/homeproxy.git package/new/homeproxy
 rm -rf ./feeds/packages/net/sing-box
-cp -rf ../passwall_pkg/sing-box ./package/new/sing-box
+cp -rf ../immortalwrt_pkg/net/sing-box ./feeds/packages/net/sing-box
 # OpenClash
 git clone --single-branch --depth 1 -b dev https://github.com/vernesong/OpenClash.git package/new/luci-app-openclash
 # Passwall
