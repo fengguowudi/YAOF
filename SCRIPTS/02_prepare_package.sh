@@ -109,9 +109,6 @@ sed -i 's,noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/grub-pc.cf
 
 
 ### 获取额外的 LuCI 应用、主题和依赖 ###
-# netifd
-mkdir -p package/network/config/netifd/patches
-cp -f ../PATCH/netifd/100-system-linux-fix-autoneg-for-2.5G-5G-10G.patch ./package/network/config/netifd/patches/100-system-linux-fix-autoneg-for-2.5G-5G-10G.patch
 # dae ready
 cp -rf ../immortalwrt_pkg/net/dae ./feeds/packages/net/dae
 ln -sf ../../../feeds/packages/net/dae ./package/feeds/packages/dae
@@ -268,6 +265,9 @@ cp -rf ../lede_luci/applications/luci-app-frpc ./package/new/luci-app-frpc
 # IPv6 兼容助手
 cp -rf ../lede/package/lean/ipv6-helper ./package/new/ipv6-helper
 patch -p1 <../PATCH/odhcp6c/1002-odhcp6c-support-dhcpv6-hotplug.patch
+# ODHCPD
+mkdir -p package/network/services/odhcpd/patches
+cp -f ../PATCH/odhcpd/0001-config-allow-configuring-max-limit-for-preferred-and.patch ./package/network/services/odhcpd/patches/0001-config-allow-configuring-max-limit-for-preferred-and.patch
 # 京东签到 By Jerrykuku
 #git clone --depth 1 https://github.com/jerrykuku/node-request.git package/new/node-request
 #git clone --depth 1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/new/luci-app-jd-dailybonus
@@ -443,12 +443,14 @@ cp -rf ../immortalwrt_pkg/net/zerotier ./feeds/packages/net/zerotier
 # watchcat
 echo > ./feeds/packages/utils/watchcat/files/watchcat.config
 # sirpdboy
-git clone -b master --depth 1 https://github.com/sirpdboy/luci-app-autotimeset package/sirpdboy/luci-app-autotimeset
+mkdir -p package/sirpdboy
+cp -rf ../sirpdboy/luci-app-autotimeset ./package/sirpdboy/luci-app-autotimeset
 sed -i 's,"control","system",g' package/sirpdboy/luci-app-autotimeset/luasrc/controller/autotimeset.lua
 sed -i '/firstchild/d' package/sirpdboy/luci-app-autotimeset/luasrc/controller/autotimeset.lua
 sed -i 's,control,system,g' package/sirpdboy/luci-app-autotimeset/luasrc/view/autotimeset/log.htm
 sed -i '/start()/a \    echo "Service autotimesetrun started!" >/dev/null' package/sirpdboy/luci-app-autotimeset/root/etc/init.d/autotimesetrun
-git clone -b main --depth 1 https://github.com/sirpdboy/luci-app-partexp package/sirpdboy/luci-app-partexp
+rm -rf ./package/sirpdboy/luci-app-autotimeset/po/zh_Hans
+cp -rf ../sirpdboy/luci-app-partexp ./package/sirpdboy/luci-app-partexp
 rm -rf ./package/sirpdboy/luci-app-partexp/po/zh_Hans
 sed -i 's, - !, -o !,g' package/sirpdboy/luci-app-partexp/root/etc/init.d/partexp
 sed -i 's,expquit 1 ,#expquit 1 ,g' package/sirpdboy/luci-app-partexp/root/etc/init.d/partexp
